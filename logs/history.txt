@@ -53,3 +53,12 @@
 [2026-05-28 16:31:34] exit
 [2026-05-28 16:32:00] search youtube for udi udi
 [2026-05-28 17:04:33] exit
+[2026-05-29 02:13:14] youtube per songs
+[2026-05-29 02:13:22] youtube per songs
+[2026-05-29 02:16:04] play songs on youtube
+[2026-05-29 02:16:27] open google
+[2026-05-29 02:16:45] search youtube per udi udi
+[2026-05-29 02:17:41] open new youtube channel
+[2026-05-29 02:17:59] play song udi udi
+[2026-05-29 02:18:22] search youtube for udi udi
+[2026-05-29 02:19:35] exit the processes

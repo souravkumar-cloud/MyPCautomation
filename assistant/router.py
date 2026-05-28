@@ -1,33 +1,40 @@
 from assistant.registry import TOOLS
-from commands.files import create_folder
-from commands.browser import youtube_search,type_text,delete_folder,google_search,github_search,leetcode_search,amazon_search,wikipedia_search
+
+from commands.files import (
+    create_folder,
+    delete_folder
+)
+
+from commands.browser import (
+    youtube_search,
+    type_text,
+    google_search,
+    github_search,
+    leetcode_search,
+    amazon_search,
+    wikipedia_search
+)
+
 
 def route_command(command):
-    command=command.lower()
+
+    command = command.lower().strip()
+
+    print("ROUTER RECEIVED:", command)
+
+    # =====================================
+    # STATIC TOOLS
+    # =====================================
+
     if command in TOOLS:
+
         return TOOLS[command]()
-    
-    elif command.startswith("create folder"):
-        name=command.replace("create folder","").strip()
-        
-        return create_folder(name)
-    
-    elif command.startswith("search youtube for"):
-        query=command.replace("search youtube for","").strip()
-        
-        if not query:
-            return "Please provide a search query"
-        
-        return youtube_search(query)
-    
-    elif command.startswith("type "):
 
-        text = command.replace("type ", "")
+    # =====================================
+    # CREATE FOLDER
+    # =====================================
 
-        return type_text(text)
-
-
-    elif command.startswith("create folder"):
+    if "create folder" in command:
 
         name = command.replace(
             "create folder",
@@ -36,8 +43,11 @@ def route_command(command):
 
         return create_folder(name)
 
+    # =====================================
+    # DELETE FOLDER
+    # =====================================
 
-    elif command.startswith("delete folder"):
+    if "delete folder" in command:
 
         name = command.replace(
             "delete folder",
@@ -46,65 +56,101 @@ def route_command(command):
 
         return delete_folder(name)
 
+    # =====================================
+    # TYPE TEXT
+    # =====================================
 
-    # elif command.startswith("search youtube for"):
+    if command.startswith("type "):
 
-    #     query = command.replace(
-    #         "search youtube for",
-    #         ""
-    #     ).strip()
-
-    #     return youtube_search(query)
-
-
-    elif command.startswith("search google for"):
-
-        query = command.replace(
-            "search google for",
+        text = command.replace(
+            "type ",
             ""
         ).strip()
+
+        return type_text(text)
+
+    # =====================================
+    # YOUTUBE SEARCH
+    # =====================================
+
+    if "youtube" in command:
+
+        query = extract_query(command)
+
+        return youtube_search(query)
+
+    # =====================================
+    # GOOGLE SEARCH
+    # =====================================
+
+    if "google" in command:
+
+        query = extract_query(command)
 
         return google_search(query)
 
+    # =====================================
+    # GITHUB SEARCH
+    # =====================================
 
-    elif command.startswith("search github for"):
+    if "github" in command:
 
-        query = command.replace(
-            "search github for",
-            ""
-        ).strip()
+        query = extract_query(command)
 
         return github_search(query)
 
+    # =====================================
+    # LEETCODE SEARCH
+    # =====================================
 
-    elif command.startswith("search leetcode for"):
+    if "leetcode" in command:
 
-        query = command.replace(
-            "search leetcode for",
-            ""
-        ).strip()
+        query = extract_query(command)
 
         return leetcode_search(query)
 
+    # =====================================
+    # AMAZON SEARCH
+    # =====================================
 
-    elif command.startswith("search amazon for"):
+    if "amazon" in command:
 
-        query = command.replace(
-            "search amazon for",
-            ""
-        ).strip()
+        query = extract_query(command)
 
         return amazon_search(query)
 
+    # =====================================
+    # WIKIPEDIA SEARCH
+    # =====================================
 
-    elif command.startswith("search wikipedia for"):
+    if "wikipedia" in command:
 
-        query = command.replace(
-            "search wikipedia for",
-            ""
-        ).strip()
+        query = extract_query(command)
 
         return wikipedia_search(query)
-    
+
     return "Unknown command"
-    
+
+
+# ==========================================
+# QUERY PARSER
+# ==========================================
+
+def extract_query(command):
+
+    separators = [
+        "for",
+        "per",
+        "about"
+    ]
+
+    for sep in separators:
+
+        if sep in command:
+
+            return command.split(
+                sep,
+                1
+            )[1].strip()
+
+    return ""
